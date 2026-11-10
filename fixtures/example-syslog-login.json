@@ -1,0 +1,11 @@
+{
+  "name": "example-syslog-login",
+  "namespace": "syslog-connector",
+  "log": "<134>1 2020-12-28T15:49:43Z myhost myapp 1234 ID47 [exampleSDID@32473 iut=\"3\"][examplePriority@32473 class=\"high\"] user login failed",
+  "expect": {
+    "host.name": "myhost",
+    "process.name": "myapp",
+    "siem.event.name": "ID47",
+    "siem.event.description": "user login failed"
+  }
+}

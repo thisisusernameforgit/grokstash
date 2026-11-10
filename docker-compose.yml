@@ -1,0 +1,84 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+        NGINX_VERSION: ${NGINX_VERSION}
+    container_name: grokstash_frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+    volumes:
+      - ./nginx/conf.d/grokstash.conf:/etc/nginx/conf.d/default.conf:ro
+    networks: [grokstash_net]
+    # UI слушаем только локально: авторизации в API нет
+    ports:
+      - "127.0.0.1:80:80"
+    logging: *default-logging
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        PYTHON_VERSION: ${PYTHON_VERSION}
+    container_name: grokstash_backend
+    restart: unless-stopped
+    env_file: .env
+    networks: [grokstash_net]
+    expose: ["4000"]
+    depends_on:
+      logstash:
+        condition: service_healthy
+    volumes:
+      - ./logstash/pipelines:/pipeline:rw
+      - ./logstash/patterns:/usr/share/logstash/patterns:ro
+      - ./fixtures:/fixtures:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:4000/api/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    logging: *default-logging
+
+  logstash:
+    image: "docker.elastic.co/logstash/logstash:${LOGSTASH_VERSION}"
+    container_name: grokstash_logstash
+    restart: unless-stopped
+    env_file: .env
+    networks: [grokstash_net]
+    ports:
+      # syslog-вход нужен с других хостов, поэтому публикуется наружу
+      - "${GROKSTASH_SYSLOG_PORT}:${GROKSTASH_SYSLOG_PORT}/tcp"
+      - "${GROKSTASH_SYSLOG_PORT}:${GROKSTASH_SYSLOG_PORT}/udp"
+      # API Logstash (9600) без авторизации, только с этой машины
+      - "127.0.0.1:9600:9600"
+    volumes:
+      - ./logstash/pipelines:/usr/share/logstash/pipeline:rw
+      - ./logstash/dictionaries:/usr/share/logstash/dictionaries:ro
+      - ./logstash/patterns:/usr/share/logstash/patterns:ro
+      - ./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro
+    environment:
+      LS_JAVA_OPTS: "-Xms2g -Xmx2g"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9600"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    logging: *default-logging
+
+networks:
+  grokstash_net:
+    driver: bridge

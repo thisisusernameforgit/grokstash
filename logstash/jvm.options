@@ -1,0 +1,9 @@
+-Xms2g
+-Xmx2g
+
+-Djava.awt.headless=true
+-Dfile.encoding=UTF-8
+-Djruby.compile.invokedynamic=true
+-XX:+HeapDumpOnOutOfMemoryError
+-Djava.security.egd=file:/dev/urandom
+-Dlog4j2.isThreadContextMapInheritable=true

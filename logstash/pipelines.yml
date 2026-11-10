@@ -1,0 +1,6 @@
+- pipeline.id: main
+  # disabled, а не v8: свои парсеры пишутся под нефильтрованные имена полей,
+  # смена режима меняет имена полей в части плагинов.
+  pipeline.ecs_compatibility: disabled
+  # Файлы читаются по алфавиту, поэтому 01-input.conf разбирает конверт раньше остальных фильтров.
+  path.config: "/usr/share/logstash/pipeline/*.conf"

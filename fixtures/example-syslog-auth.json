@@ -1,0 +1,11 @@
+{
+  "name": "example-syslog-auth",
+  "namespace": "syslog-connector",
+  "log": "<13>1 2021-07-04T08:15:00Z fw01 sshd 4321 AUTH-1 [a b][c d] failed password for admin",
+  "expect": {
+    "host.name": "fw01",
+    "process.name": "sshd",
+    "siem.event.name": "AUTH-1",
+    "siem.event.description": "failed password for admin"
+  }
+}

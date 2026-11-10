@@ -1,0 +1,153 @@
+:root {
+  --md-bg: #121212;
+  --md-surface: #1e1e1e;
+  --md-on-surface: #e0e0e0;
+  --md-primary: #bb86fc;
+  --md-on-primary: #000000;
+  --md-secondary: #03dac6;
+  --md-on-secondary: #000000;
+  --md-border: #2a2a2a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: var(--md-bg);
+  color: var(--md-on-surface);
+}
+
+main {
+  padding: 32px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--md-on-surface);
+  margin-bottom: 12px;
+}
+
+section {
+  background-color: var(--md-surface);
+  padding: 16px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+button {
+  background-color: var(--md-primary);
+  color: var(--md-on-primary);
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #c77dff;
+}
+
+a {
+  color: var(--md-secondary);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.cm-editor,
+.react-syntax-highlighter {
+  background-color: var(--md-surface) !important;
+  color: var(--md-on-surface) !important;
+}
+
+.react-syntax-highlighter {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Улучшенные стили для CodeMirror */
+.cm-editor {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+.cm-editor .cm-content {
+  font-family: 'Roboto', 'Fira Code', 'Monaco', 'Menlo', monospace !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  padding: 12px !important;
+}
+
+.cm-editor .cm-line {
+  padding: 0 !important;
+}
+
+.cm-editor .cm-cursor {
+  border-left-color: var(--md-primary) !important;
+}
+
+.cm-editor .cm-selectionBackground {
+  background-color: rgba(187, 134, 252, 0.2) !important;
+}
+
+.cm-editor .cm-activeLine {
+  background-color: rgba(187, 134, 252, 0.05) !important;
+}
+
+.cm-editor .cm-tooltip {
+  background-color: var(--md-surface) !important;
+  border: 1px solid var(--md-border) !important;
+  border-radius: 4px !important;
+  color: var(--md-on-surface) !important;
+}
+
+.cm-editor .cm-tooltip.cm-tooltip-autocomplete {
+  background-color: var(--md-surface) !important;
+  border: 1px solid var(--md-border) !important;
+}
+
+.cm-editor .cm-tooltip.cm-tooltip-autocomplete>ul {
+  background-color: var(--md-surface) !important;
+}
+
+.cm-editor .cm-tooltip.cm-tooltip-autocomplete>ul>li {
+  padding: 8px 12px !important;
+}
+
+.cm-editor .cm-tooltip.cm-tooltip-autocomplete>ul>li[aria-selected] {
+  background-color: var(--md-primary) !important;
+  color: var(--md-on-primary) !important;
+}
+
+/* Улучшенные стили для синтаксиса */
+.react-syntax-highlighter {
+  font-family: 'Roboto', 'Fira Code', 'Monaco', 'Menlo', monospace !important;
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  border-radius: 8px !important;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--md-border); margin-bottom: 24px; }
+.tab-btn {
+  background: none; color: var(--md-on-surface); border: none; border-radius: 4px 4px 0 0;
+  padding: 8px 20px; cursor: pointer; font-size: 14px; opacity: 0.6;
+}
+.tab-btn:hover { opacity: 0.9; background: rgba(255,255,255,0.05); }
+.tab-btn.active { opacity: 1; border-bottom: 2px solid var(--md-primary); color: var(--md-primary); }
